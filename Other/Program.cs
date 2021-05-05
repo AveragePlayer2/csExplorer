@@ -1,4 +1,5 @@
-﻿using System;
+﻿using csharpExplorer.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace csharpExplorer
         [STAThread]
         static void Main()
         {
+            Utils.logfilename = "log.txt";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Main());
