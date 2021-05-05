@@ -10,7 +10,7 @@ namespace csharpExplorer.Classes
     {
         public void log(string line)
         {
-            //testt
+            //test
             Console.WriteLine(line);
         }
     }
