@@ -6,44 +6,66 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace csharpExplorer.Classes
 {
     class Utils
     {
-        public static string TrimEnd(string input, string suffixToRemove, StringComparison comparisonType = StringComparison.CurrentCulture)
-        {
-            if (suffixToRemove != null && input.EndsWith(suffixToRemove, comparisonType))
-            {
-                return input.Substring(0, input.Length - suffixToRemove.Length);
-            }
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
 
-            return input;
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct SHELLEXECUTEINFO
+        {
+            public int cbSize;
+            public uint fMask;
+            public IntPtr hwnd;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpVerb;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpFile;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpParameters;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpDirectory;
+            public int nShow;
+            public IntPtr hInstApp;
+            public IntPtr lpIDList;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public string lpClass;
+            public IntPtr hkeyClass;
+            public uint dwHotKey;
+            public IntPtr hIcon;
+            public IntPtr hProcess;
         }
+
+        private const int SW_SHOW = 5;
+        private const uint SEE_MASK_INVOKEIDLIST = 12;
+        public static bool ShowFileProperties(string Filename)
+        {
+            SHELLEXECUTEINFO info = new SHELLEXECUTEINFO();
+            info.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(info);
+            info.lpVerb = "properties";
+            info.lpFile = Filename;
+            info.nShow = SW_SHOW;
+            info.fMask = SEE_MASK_INVOKEIDLIST;
+            return ShellExecuteEx(ref info);
+        }
+
 
         public static readonly string csPath = Environment.GetEnvironmentVariable("LocalAppData") + @"\csharpExplorer\";
 
 
-        public static string requestLocalText(string path)
+        public static string getDir(string line)
         {
-            return File.ReadAllText(csPath + path);
-        }
-
-        // gets path name
-        public static string getFileType(FileInfo file)
-        {
-            try
-            {
-                if (file.Extension.ToLower() == ".exe")
-                {
-                    string[] pathSplit = file.FullName.Split('\\');
-                    return pathSplit[pathSplit.Length];
-                }
-                else
-                    return file.Name;
-            }
-            catch { }
-            return "File";
+            string[] lines = line.Split('\\');
+            string result = "";
+            for (int i = 0; i < lines.Length - 1; i++)
+                result += lines[i] + @"\";
+            if (!result.EndsWith(@"\"))
+                result += @"\";
+            return result;
         }
 
         public static string logfilename;

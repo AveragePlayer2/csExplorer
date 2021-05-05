@@ -1,14 +1,10 @@
 ﻿using csharpExplorer.Classes;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace csharpExplorer
@@ -16,6 +12,56 @@ namespace csharpExplorer
     public partial class Main : Form
     {
         public static string currentPathstring = @"C:\";
+
+        public void cm_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            try
+            {
+                ToolStripItem item = e.ClickedItem;
+                if (item.Text == "Run")
+                {
+                    Process.Start((string)item.Tag);
+                }
+                if (item.Text == "Delete")
+                {
+                    File.Delete((string)item.Tag);
+                    refresh();
+                }
+                if (item.Text == "Rename")
+                {
+                    string renameTo = Microsoft.VisualBasic.Interaction.InputBox("What do you want to rename this to?", "Rename", "");
+                    if (renameTo != "")
+                    {
+                        renameTo.Replace(@"\", "");
+                        File.Copy((string)item.Tag, Utils.getDir((string)item.Tag) + renameTo);
+                        File.Delete((string)item.Tag);
+                        refresh();
+                    }
+                }
+                if (item.Text == "Copy")
+                {
+                    Clipboard.SetDataObject(File.ReadAllBytes((string)item.Tag));
+                }
+                if (item.Text == "Properties")
+                {
+                    Utils.ShowFileProperties((string)item.Tag);
+                }
+                if (item.Text == "Extract")
+                {
+                    try
+                    {
+                        string extract = Microsoft.VisualBasic.Interaction.InputBox("Where do you want to extract this to?", "Extract", Utils.getDir((string)item.Tag));
+                        if (extract != "")
+                        {
+                            ZipFile.ExtractToDirectory((string)item.Tag, extract);
+                            refresh();
+                        }
+                    }
+                    catch { MessageBox.Show("Error"); }
+                }
+            }
+            catch { MessageBox.Show("Error!"); }
+        }
 
         public void makeFile(Panel panel, FileInfo file, int x, int y)
         {
@@ -33,6 +79,7 @@ namespace csharpExplorer
             // picturebox settings
             picBox.Size = new Size(58, 60);
             picBox.Location = new Point(x, y - 63);
+            bool isArchive = false;
             switch(file.Extension.ToLower())
             {
                 case ".exe":
@@ -40,24 +87,44 @@ namespace csharpExplorer
                     break;
                 case ".zip":
                     picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    isArchive = true;
                     break;
                 case ".tar":
                     picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    isArchive = true;
                     break;
                 case ".rar":
                     picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    isArchive = true;
                     break;
                 case ".rar5":
                     picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    isArchive = true;
                     break;
                 case ".7z":
                     picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    isArchive = true;
                     break;
                 default:
                     picBox.BackgroundImage = (Image)Properties.Resources.file;
                     break;
             }
             picBox.BackgroundImageLayout = ImageLayout.Zoom;
+
+
+            // context menu
+            ContextMenuStrip cm = new ContextMenuStrip();
+            string[] contexts = new string[] { "Run", "Delete", "Rename", "Copy", "Properties", "Extract"};
+            for(int i = 0; i < contexts.Length; i++)
+            {
+                cm.Items.Add(contexts[i]);
+
+                // shit fix but it worksi guess
+                cm.Items[i].Tag = file.FullName;
+            }
+            picBox.ContextMenuStrip = cm;
+            cm.ItemClicked += new ToolStripItemClickedEventHandler(cm_ItemClicked);
+
 
             // add it to the panel
             panel.Controls.Add(picBox);
@@ -98,6 +165,12 @@ namespace csharpExplorer
             loadFolder(dir.FullName, panel, true);
             currentPathstring = dir.FullName;
             this.currentPath.Text = dir.FullName;
+        }
+
+        void refresh()
+        {
+            loadFolder(this.currentPath.Text, this.filePanel, true);
+            currentPathstring = this.currentPath.Text;
         }
 
         void openFile(object sender, MouseEventArgs e, FileInfo file)

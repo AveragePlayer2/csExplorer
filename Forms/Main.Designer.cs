@@ -40,7 +40,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.filePanel.AutoScroll = true;
-            this.filePanel.BackColor = System.Drawing.Color.Gray;
+            this.filePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.filePanel.Location = new System.Drawing.Point(12, 38);
             this.filePanel.Name = "filePanel";
             this.filePanel.Size = new System.Drawing.Size(776, 400);
@@ -50,16 +50,23 @@
             // 
             this.currentPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.currentPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.currentPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.currentPath.ForeColor = System.Drawing.Color.White;
             this.currentPath.Location = new System.Drawing.Point(12, 12);
             this.currentPath.Name = "currentPath";
-            this.currentPath.Size = new System.Drawing.Size(739, 20);
+            this.currentPath.Size = new System.Drawing.Size(739, 13);
             this.currentPath.TabIndex = 1;
             this.currentPath.Text = "C:\\";
             this.currentPath.TextChanged += new System.EventHandler(this.currentPath_TextChanged);
             // 
             // back
             // 
-            this.back.Location = new System.Drawing.Point(757, 12);
+            this.back.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.back.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.back.ForeColor = System.Drawing.Color.White;
+            this.back.Location = new System.Drawing.Point(757, 7);
             this.back.Name = "back";
             this.back.Size = new System.Drawing.Size(31, 20);
             this.back.TabIndex = 2;
@@ -71,6 +78,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(44)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.back);
             this.Controls.Add(this.currentPath);
