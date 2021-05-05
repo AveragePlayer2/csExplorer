@@ -152,6 +152,19 @@ namespace csharpExplorer
             picBox.BackgroundImage = (Image)Properties.Resources.folder;
             picBox.BackgroundImageLayout = ImageLayout.Zoom;
 
+            // context menu
+            ContextMenuStrip cm = new ContextMenuStrip();
+            string[] contexts = new string[] { "Delete", "Rename"};
+            for (int i = 0; i < contexts.Length; i++)
+            {
+                cm.Items.Add(contexts[i]);
+
+                // shit fix but it worksi guess
+                cm.Items[i].Tag = file.FullName;
+            }
+            picBox.ContextMenuStrip = cm;
+            cm.ItemClicked += new ToolStripItemClickedEventHandler(cm_ItemClicked);
+
             // add it to the panel
             panel.Controls.Add(picBox);
             panel.Controls.Add(label);
