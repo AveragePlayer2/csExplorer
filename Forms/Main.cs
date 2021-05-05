@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -32,13 +33,37 @@ namespace csharpExplorer
             // picturebox settings
             picBox.Size = new Size(58, 60);
             picBox.Location = new Point(x, y - 63);
-            picBox.BackgroundImage = (Image)Properties.Resources.file;
+            switch(file.Extension.ToLower())
+            {
+                case ".exe":
+                    picBox.BackgroundImage = (Image)Properties.Resources.exe;
+                    break;
+                case ".zip":
+                    picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    break;
+                case ".tar":
+                    picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    break;
+                case ".rar":
+                    picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    break;
+                case ".rar5":
+                    picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    break;
+                case ".7z":
+                    picBox.BackgroundImage = (Image)Properties.Resources.archive;
+                    break;
+                default:
+                    picBox.BackgroundImage = (Image)Properties.Resources.file;
+                    break;
+            }
             picBox.BackgroundImageLayout = ImageLayout.Zoom;
 
             // add it to the panel
             panel.Controls.Add(picBox);
             panel.Controls.Add(label);
             picBox.BringToFront();
+            picBox.DoubleClick += (sender, EventArgs) => { openFile(sender, null, file); };
         }
 
         public void makeFolder(Panel panel, DirectoryInfo file, int x, int y)
@@ -75,9 +100,13 @@ namespace csharpExplorer
             this.currentPath.Text = dir.FullName;
         }
 
+        void openFile(object sender, MouseEventArgs e, FileInfo file)
+        {
+            Process.Start(file.FullName);
+        }
+
         public void loadFolder(string folderPath, Panel panel, bool shouldClear)
         {
-
             try
             {
                 // clear the panel if needed
