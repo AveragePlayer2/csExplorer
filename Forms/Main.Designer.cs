@@ -35,6 +35,9 @@
             // 
             // filePanel
             // 
+            this.filePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.filePanel.BackColor = System.Drawing.Color.Silver;
             this.filePanel.Location = new System.Drawing.Point(12, 38);
             this.filePanel.Name = "filePanel";
@@ -43,6 +46,8 @@
             // 
             // currentPath
             // 
+            this.currentPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.currentPath.Location = new System.Drawing.Point(12, 12);
             this.currentPath.Name = "currentPath";
             this.currentPath.Size = new System.Drawing.Size(776, 20);
@@ -61,6 +66,7 @@
             this.Name = "Main";
             this.Text = "csharpExplorer";
             this.Load += new System.EventHandler(this.Main_Load);
+            this.Resize += new System.EventHandler(this.Main_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 

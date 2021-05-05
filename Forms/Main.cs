@@ -35,5 +35,15 @@ namespace csharpExplorer
             catch
             { }
         }
+
+        private void Main_Resize(object sender, EventArgs e)
+        {
+            try
+            {
+                Utils.loadFolder(currentPath.Text, this, filePanel, true);
+            }
+            catch
+            { }
+        }
     }
 }

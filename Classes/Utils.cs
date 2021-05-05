@@ -152,7 +152,7 @@ namespace csharpExplorer.Classes
             foreach (DirectoryInfo dir in new DirectoryInfo(folderPath).GetDirectories())
             {
                 // if x is too big for panel, make new row
-                if(x - 64 >= panel.Size.Width)
+                if(x + 64 >= panel.Size.Width)
                 {
                     newRow = true;
                 }
@@ -171,7 +171,7 @@ namespace csharpExplorer.Classes
             foreach (FileInfo file in new DirectoryInfo(folderPath).GetFiles())
             {
                 // if x is too big for panel, make new row
-                if (x - 64 >= panel.Size.Width)
+                if (x + 64 >= panel.Size.Width)
                 {
                     newRow = true;
                 }
