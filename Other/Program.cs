@@ -15,10 +15,10 @@ namespace csharpExplorer
         [STAThread]
         static void Main()
         {
-            Utils.logfilename = "log.txt";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Main());
+
         }
     }
 }
